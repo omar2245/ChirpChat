@@ -43,7 +43,7 @@ function Topbar() {
             className="bg-primary-500"
             onClick={() => router.replace("sign-in")}
           >
-            Sign In
+            Login
           </Button>
         </SignedOut>
         <OrganizationSwitcher
