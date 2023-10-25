@@ -1,10 +1,16 @@
 "use client";
 
-import { OrganizationSwitcher, SignedIn, SignOutButton } from "@clerk/nextjs";
+import {
+  OrganizationSwitcher,
+  SignedIn,
+  SignOutButton,
+  SignedOut,
+} from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 function Topbar() {
   const router = useRouter();
@@ -32,7 +38,14 @@ function Topbar() {
             </SignOutButton>
           </SignedIn>
         </div>
-
+        <SignedOut>
+          <Button
+            className="bg-primary-500"
+            onClick={() => router.replace("sign-in")}
+          >
+            Sign In
+          </Button>
+        </SignedOut>
         <OrganizationSwitcher
           appearance={{
             baseTheme: dark,
