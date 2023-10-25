@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  OrganizationSwitcher,
-  SignedIn,
-  SignOutButton,
-  SignedOut,
-} from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
+import { SignedIn, SignOutButton, SignedOut } from "@clerk/nextjs";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,14 +41,6 @@ function Topbar() {
             Login
           </Button>
         </SignedOut>
-        <OrganizationSwitcher
-          appearance={{
-            baseTheme: dark,
-            elements: {
-              organizationSwitcherTrigger: "py-2 px-4",
-            },
-          }}
-        />
       </div>
     </nav>
   );
