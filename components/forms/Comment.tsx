@@ -43,6 +43,8 @@ const Comment = ({ threadId, currentUserImage, currentUserId }: Props) => {
       JSON.parse(currentUserId),
       pathname
     );
+
+    form.reset();
   };
   return (
     <Form {...form}>

@@ -21,7 +21,7 @@ const page = async () => {
         {activity.length > 0 ? (
           <>
             {activity.map((activity) => (
-              <Link key={activity._id} href={`/thread/${activity.parentId}`}>
+              <Link key={activity._id} href={`/post/${activity.parentId}`}>
                 <article className="activity-card">
                   <Image
                     src={activity.author.image}
@@ -34,7 +34,7 @@ const page = async () => {
                     <span className="mr-1 text-primary-500">
                       {activity.author.name}
                     </span>
-                    replied to your thread
+                    replied to your post
                   </p>
                 </article>
               </Link>

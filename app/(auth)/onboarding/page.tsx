@@ -24,7 +24,7 @@ async function Page() {
       <h1 className="head-text">Onboarding</h1>
 
       <p className="mt-3 text-base-regular text-light-2">
-        Complete your profile now, to use Threds.
+        Complete your profile now, to use Chirp Chat.
       </p>
 
       <section className="mt-9 bg-dark-2 p-10">

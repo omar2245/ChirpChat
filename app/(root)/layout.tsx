@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ChirpChat",
-  description: "A Next.js 13 Meta Threads application",
+  description: "A Next.js 13 Meta ChirpChat application",
 };
 
 export default async function RootLayout({

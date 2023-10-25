@@ -16,6 +16,9 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!userInfo?.onBoarded) redirect("/onboarding");
 
   const thread = await fetchThreadById(params.id);
+  if (!thread) {
+    return <p>Post Doesn't Exist or deleted by User</p>;
+  }
 
   return (
     <section className="relative">

@@ -5,7 +5,6 @@ import { profileTabs } from "@/constants";
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import ThreadsTab from "@/components/shared/ThreadsTab";
 import UserCard from "@/components/cards/UserCard";
 
 const page = async () => {
