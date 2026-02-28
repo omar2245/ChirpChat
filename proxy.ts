@@ -9,6 +9,7 @@ const PUBLIC_ROUTES = new Set([
   "/api/auth/sign-in",
   "/api/auth/sign-up",
   "/api/auth/sign-out",
+  "/api/keepalive",
 ]);
 
 export function proxy(req: NextRequest) {
