@@ -12,7 +12,7 @@ const PUBLIC_ROUTES = new Set([
   "/api/keepalive",
 ]);
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (
