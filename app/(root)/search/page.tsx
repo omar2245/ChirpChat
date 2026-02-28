@@ -1,16 +1,12 @@
-import Image from "next/image";
-import ProfileHeader from "@/components/shared/ProfileHeader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { profileTabs } from "@/constants";
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import UserCard from "@/components/cards/UserCard";
 
 const page = async () => {
-  const user = await currentUser();
+  const user = await getCurrentUser();
 
-  if (!user) return null;
+  if (!user) redirect("/sign-in");
 
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onBoarded) redirect("/onboarding");

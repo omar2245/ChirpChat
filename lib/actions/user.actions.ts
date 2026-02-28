@@ -23,7 +23,7 @@ export async function updateUser({
   image,
   path,
 }: params): Promise<void> {
-  connectedToDB();
+  await connectedToDB();
 
   try {
     await User.findOneAndUpdate(
@@ -41,7 +41,7 @@ export async function updateUser({
 }
 
 export async function fetchUser(userId: string) {
-  connectedToDB();
+  await connectedToDB();
   try {
     const user = await User.findOne({ id: userId });
     return user;
@@ -51,7 +51,7 @@ export async function fetchUser(userId: string) {
 }
 
 export async function fetchUserPost(userId: string) {
-  connectedToDB();
+  await connectedToDB();
   try {
     const threads = await User.findOne({ id: userId }).populate({
       path: "threads",
@@ -90,7 +90,7 @@ export async function fetchUsers({
   sortBy?: SortOrder;
 }) {
   try {
-    connectedToDB();
+    await connectedToDB();
 
     const skipAmount = (pageNumber - 1) * pageSize;
     const regex = new RegExp(searchString, "i");
@@ -124,7 +124,7 @@ export async function fetchUsers({
 
 export async function getActiviy(userId: string) {
   try {
-    connectedToDB();
+    await connectedToDB();
     const userTreads = await Thread.find({ author: userId });
     console.log(userTreads[0]);
     // Collect all child thread ids

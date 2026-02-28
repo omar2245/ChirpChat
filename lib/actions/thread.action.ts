@@ -17,7 +17,7 @@ export async function createThread({
   communityId,
   path,
 }: Params) {
-  connectedToDB();
+  await connectedToDB();
 
   try {
     const createdThread = await Thread.create({
@@ -38,7 +38,7 @@ export async function createThread({
 }
 
 export async function fetchThreads(pageNumber = 1, pageSize = 20) {
-  connectedToDB();
+  await connectedToDB();
 
   const skipAmount = (pageNumber - 1) * pageSize;
 
@@ -69,7 +69,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
   return { posts, isNext };
 }
 export async function fetchThreadById(id: string) {
-  connectedToDB();
+  await connectedToDB();
 
   // Fetch the posts have no parent
   try {
@@ -111,7 +111,7 @@ export async function addComment(
   userId: string,
   path: string
 ) {
-  connectedToDB();
+  await connectedToDB();
   try {
     const originThread = await Thread.findById(threadId);
     if (!originThread) {

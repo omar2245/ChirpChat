@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   id: { type: String, require: true },
   username: { type: String, require: true, unique: true },
   name: { type: String, require: true },
+  password: { type: String, required: true, select: false },
   image: String,
   bio: String,
   threads: [

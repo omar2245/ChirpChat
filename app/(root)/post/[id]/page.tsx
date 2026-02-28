@@ -2,15 +2,15 @@ import ThreadCard from "@/components/cards/ThreadCard";
 import Comment from "@/components/forms/Comment";
 import { fetchThreadById } from "@/lib/actions/thread.action";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null;
 
-  const user = await currentUser();
-  if (!user) return null;
+  const user = await getCurrentUser();
+  if (!user) redirect("/sign-in");
 
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onBoarded) redirect("/onboarding");

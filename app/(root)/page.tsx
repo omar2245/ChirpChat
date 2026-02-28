@@ -1,13 +1,12 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import HomePagePost from "@/components/forms/HomePagePost";
 import { fetchThreads } from "@/lib/actions/thread.action";
-import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
   const result = await fetchThreads(1, 30);
-  const user = await currentUser();
+  const user = await getCurrentUser();
   if (!user) {
     return (
       <>
@@ -17,13 +16,12 @@ export default async function Home() {
     );
   }
 
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onBoarded) redirect("/onboarding");
+  if (!user?.onBoarded) redirect("/onboarding");
 
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
-      <HomePagePost userId={userInfo._id} userImg={userInfo.image} />
+      <HomePagePost userId={String(user._id)} userImg={user.image} />
       <section className="flex flex-col gap-4">
         {result.posts.length === 0 ? (
           <p className="no-result">No Posts found</p>

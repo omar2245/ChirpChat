@@ -119,6 +119,7 @@ const ThreadCard = ({
                       (child, index) =>
                         child?.author?.image && (
                           <div
+                            key={child?._id ?? `${id}-${index}`}
                             className={`relative w-5 h-5  ${
                               index === 0 ? "ml-0" : "-ml-1"
                             }`}

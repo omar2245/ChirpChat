@@ -3,14 +3,14 @@ import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const user = await currentUser();
+  const user = await getCurrentUser();
 
-  if (!user) return null;
+  if (!user) redirect("/sign-in");
 
   const userInfo = await fetchUser(params.id);
   if (!userInfo?.onBoarded) redirect("/onboarding");

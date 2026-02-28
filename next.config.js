@@ -3,10 +3,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    serverActions: true,
-    serverComponentsExternalPackages: ["mongoose"],
-  },
+  serverExternalPackages: ["mongoose"],
   images: {
     remotePatterns: [
       {
@@ -30,9 +27,6 @@ const nextConfig = {
         hostname: "utfs.io",
       },
     ],
-    typescript: {
-      ignoreBuildErrors: true,
-    },
   },
 };
 

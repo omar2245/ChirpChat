@@ -1,13 +1,13 @@
 import { fetchUser, getActiviy } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
+import { getCurrentUser } from "@/lib/auth";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
 const page = async () => {
-  const user = await currentUser();
+  const user = await getCurrentUser();
 
-  if (!user) return null;
+  if (!user) redirect("/sign-in");
 
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onBoarded) redirect("/onboarding");

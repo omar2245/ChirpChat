@@ -1,9 +1,8 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { currentUser } from "@clerk/nextjs";
+import { AUTH_COOKIE_NAME } from "@/lib/auth-constants";
+import { getUserFromToken } from "@/lib/auth";
 
 const f = createUploadthing();
-
-const getUser = async () => await currentUser(); // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -12,7 +11,13 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const user = await getUser();
+      const cookieHeader = req.headers.get("cookie") || "";
+      const authCookie = cookieHeader
+        .split(";")
+        .map((part) => part.trim())
+        .find((part) => part.startsWith(`${AUTH_COOKIE_NAME}=`));
+      const token = authCookie?.split("=")[1];
+      const user = await getUserFromToken(token);
 
       // If you throw, the user will not be able to upload
       if (!user) throw new Error("Unauthorized");

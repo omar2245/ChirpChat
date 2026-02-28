@@ -1,13 +1,12 @@
 "use client";
 
-import { SignedIn, SignOutButton, SignedOut } from "@clerk/nextjs";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import LogoutButton from "../auth/LogoutButton";
 
-function Topbar() {
+function Topbar({ isAuthenticated }: { isAuthenticated: boolean }) {
   const router = useRouter();
   return (
     <nav className="topbar">
@@ -19,28 +18,18 @@ function Topbar() {
       </Link>
 
       <div className="flex items-center gap-1">
-        <div className="md:hidden">
-          <SignedIn>
-            <SignOutButton signOutCallback={() => router.push("sign-in")}>
-              <div className="flex cursor-pointer">
-                <Image
-                  src="/assets/logout.svg"
-                  alt="logout"
-                  width={24}
-                  height={24}
-                />
-              </div>
-            </SignOutButton>
-          </SignedIn>
-        </div>
-        <SignedOut>
+        {isAuthenticated ? (
+          <div className="md:hidden">
+            <LogoutButton />
+          </div>
+        ) : (
           <Button
             className="bg-primary-500"
-            onClick={() => router.replace("sign-in")}
+            onClick={() => router.replace("/sign-in")}
           >
             Login
           </Button>
-        </SignedOut>
+        )}
       </div>
     </nav>
   );
