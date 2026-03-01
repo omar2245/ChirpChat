@@ -3,6 +3,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  allowedDevOrigins: ["192.168.68.102"],
   serverExternalPackages: ["mongoose"],
   images: {
     remotePatterns: [
@@ -17,6 +18,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
       },
     ],
   },

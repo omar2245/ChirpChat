@@ -6,12 +6,13 @@ import { redirect } from "next/navigation";
 async function Page() {
   const user = await getCurrentUser();
   if (!user) redirect("/sign-in");
+  const userIdentifier = String(user?.id || user?._id || "");
 
-  const userInfo = await fetchUser(user.id);
+  const userInfo = await fetchUser(userIdentifier);
   if (userInfo?.onBoarded) redirect("/");
 
   const userData = {
-    id: String(user?.id || ""),
+    id: userIdentifier,
     objectId: String(userInfo?._id || ""),
     username: String(userInfo?.username || user?.username || ""),
     name: String(userInfo?.name || user?.name || ""),

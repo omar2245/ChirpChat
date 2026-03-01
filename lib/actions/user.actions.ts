@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
 import { connectedToDB } from "../mongoose";
 import Thread from "../models/thread.model";
-import { FilterQuery, SortOrder } from "mongoose";
+import { FilterQuery, isValidObjectId, SortOrder } from "mongoose";
 
 interface params {
   userId: string;
@@ -43,7 +43,11 @@ export async function updateUser({
 export async function fetchUser(userId: string) {
   await connectedToDB();
   try {
-    const user = await User.findOne({ id: userId });
+    const userQuery = isValidObjectId(userId)
+      ? { $or: [{ id: userId }, { _id: userId }] }
+      : { id: userId };
+
+    const user = await User.findOne(userQuery);
     return user;
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
@@ -53,7 +57,11 @@ export async function fetchUser(userId: string) {
 export async function fetchUserPost(userId: string) {
   await connectedToDB();
   try {
-    const threads = await User.findOne({ id: userId }).populate({
+    const userQuery = isValidObjectId(userId)
+      ? { $or: [{ id: userId }, { _id: userId }] }
+      : { id: userId };
+
+    const threads = await User.findOne(userQuery).populate({
       path: "threads",
       model: Thread,
       populate: [

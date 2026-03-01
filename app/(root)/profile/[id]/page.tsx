@@ -4,22 +4,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({
+  params,
+}: {
+  params: Promise<{ id: string }> | { id: string };
+}) => {
+  const { id: profileId } = await params;
+
   const user = await getCurrentUser();
+  const authUserId = String(user?.id || user?._id || "");
 
   if (!user) redirect("/sign-in");
+  if (!authUserId) redirect("/sign-in");
 
-  const userInfo = await fetchUser(params.id);
-  if (!userInfo?.onBoarded) redirect("/onboarding");
+  const currentUserInfo = await fetchUser(authUserId);
+  if (!currentUserInfo?.onBoarded) redirect("/onboarding");
+
+  if (!profileId) notFound();
+
+  const userInfo = await fetchUser(profileId);
+  if (!userInfo) notFound();
+
+  const accountId = String(userInfo?.id || userInfo?._id || "");
 
   return (
     <section>
       <ProfileHeader
-        accountId={userInfo.id}
-        authUserId={user.id}
+        accountId={accountId}
+        authUserId={authUserId}
         name={userInfo.name}
         username={userInfo.username}
         imgUrl={userInfo.image}
@@ -55,8 +70,8 @@ const page = async ({ params }: { params: { id: string } }) => {
               className="w-full text-light-1"
             >
               <ThreadsTab
-                currentUserId={user.id}
-                accountId={userInfo.id}
+                currentUserId={authUserId}
+                accountId={accountId}
                 accountType="User"
               />
             </TabsContent>

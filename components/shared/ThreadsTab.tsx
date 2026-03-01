@@ -1,5 +1,4 @@
 import { fetchUserPost } from "@/lib/actions/user.actions";
-import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
 
@@ -10,9 +9,15 @@ interface Props {
 }
 
 const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
-  let result = await fetchUserPost(accountId);
+  const result = await fetchUserPost(accountId);
 
-  if (!result) redirect("/");
+  if (!result) {
+    return <p className="no-result mt-9">User not found.</p>;
+  }
+
+  if (!result.threads?.length) {
+    return <p className="no-result mt-9">No threads yet.</p>;
+  }
 
   return (
     <section className="mt-9 flex flex-col gap-4">

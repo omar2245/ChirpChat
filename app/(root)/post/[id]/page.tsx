@@ -3,19 +3,27 @@ import Comment from "@/components/forms/Comment";
 import { fetchThreadById } from "@/lib/actions/thread.action";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 
-const page = async ({ params }: { params: { id: string } }) => {
-  if (!params.id) return null;
+const page = async ({
+  params,
+}: {
+  params: Promise<{ id: string }> | { id: string };
+}) => {
+  const { id: threadId } = await params;
+  if (!threadId) notFound();
 
   const user = await getCurrentUser();
-  if (!user) redirect("/sign-in");
+  const authUserId = String(user?.id || user?._id || "");
 
-  const userInfo = await fetchUser(user.id);
+  if (!user) redirect("/sign-in");
+  if (!authUserId) redirect("/sign-in");
+
+  const userInfo = await fetchUser(authUserId);
   if (!userInfo?.onBoarded) redirect("/onboarding");
 
-  const thread = await fetchThreadById(params.id);
+  const thread = await fetchThreadById(threadId);
   if (!thread) {
     return <p>Post Doesn't Exist or deleted by User</p>;
   }
@@ -25,7 +33,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       <div>
         <ThreadCard
           id={thread._id}
-          currentUserId={user.id}
+          currentUserId={authUserId}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
@@ -37,7 +45,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <div className="mt-7">
         <Comment
-          threadId={params.id}
+          threadId={threadId}
           currentUserImage={userInfo.image}
           currentUserId={JSON.stringify(userInfo._id)}
         />
@@ -48,7 +56,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           <ThreadCard
             key={childItem._id}
             id={childItem._id}
-            currentUserId={user?.id}
+            currentUserId={authUserId}
             parentId={childItem.parentId}
             content={childItem.text}
             author={childItem.author}
